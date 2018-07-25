@@ -13,7 +13,7 @@ import java.util.Properties;
  * @创建时间 2018/7/24
  * @描述
  */
-@Configuration
+//@Configuration
 public class WebConfig extends WebMvcConfigurerAdapter{
 
     /**

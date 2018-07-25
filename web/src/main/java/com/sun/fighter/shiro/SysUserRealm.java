@@ -2,6 +2,7 @@ package com.sun.fighter.shiro;
 
 import com.sun.fighter.study.domain.SysUser;
 import com.sun.fighter.study.user.service.SysUserService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -21,6 +22,7 @@ import java.util.*;
  * @描述
  */
 @Configuration
+@Slf4j
 public class SysUserRealm extends AuthorizingRealm {
 
     @Autowired
@@ -38,17 +40,22 @@ public class SysUserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        String principal = (String) authenticationToken.getPrincipal();
-        SysUser sysUser = Optional.ofNullable(sysUserService.selectById(1)).orElseThrow(UnknownAccountException::new);
-        if(sysUser.isLocked()){
+        //获取用户的输入的账号.
+        String username = (String) authenticationToken.getPrincipal();
+        log.info("登录账号：{}",username);
+        SysUser sysUser = sysUserService.findByUserName(username);
+        if(sysUser == null){
+            throw new UnknownAccountException();
+        }
+        if("1".equals(sysUser.getStatus())){
             throw new LockedAccountException();
         }
         // 从数据库查询出来的账号名和密码,与用户输入的账号和密码对比
-        // 当用户执行登录时,在方法处理上要实现 user.login(token)
-        // 然后会自动进入这个类进行认证
-        // 交给 AuthenticatingRealm 使用 CredentialsMatcher 进行密码匹配，如果觉得人家的不好可以自定义实现
-        // TODO 如果使用 HashedCredentialsMatcher 这里认证方式就要改一下 SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(principal, "密码", ByteSource.Util.bytes("密码盐"), getName());
-        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(principal, sysUser.getPassword(), ByteSource.Util.bytes(sysUser.getSalt()), getName());
+        SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
+                username, //用户名
+                sysUser.getPassword(),//密码
+                ByteSource.Util.bytes(sysUser.getSalt()),//salt = 用户名+盐
+                getName()); //realm name
         Session session = SecurityUtils.getSubject().getSession();
         session.setAttribute("USER_SESSION", sysUser);
         return authenticationInfo;
@@ -59,20 +66,17 @@ public class SysUserRealm extends AuthorizingRealm {
      * 如果需要动态权限,但是又不想每次去数据库校验,可以存在ehcache中.自行完善
      */
     @Override
-    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        Session session = SecurityUtils.getSubject().getSession();
-        SysUser user = (SysUser) session.getAttribute("USER_SESSION");
+    protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
+        log.info("--权限配置--");
+        SysUser sysUser = (SysUser) principals.getPrimaryPrincipal();
         // 权限信息对象info,用来存放查出的用户的所有的角色（role）及权限（permission）
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-        // 用户的角色集合
-        Set<String> roles = new HashSet<>();
-//        roles.add(user.getRoleName());
-        info.setRoles(roles);
-        // 用户的角色对应的所有权限，如果只使用角色定义访问权限，下面可以不要
-        // 只有角色并没有颗粒度到每一个按钮 或 是操作选项  PERMISSIONS 是可选项
-//        final Map<String, Collection<String>> permissionsCache = DBCache.PERMISSIONS_CACHE;
-//        final Collection<String> permissions = permissionsCache.get(user.getRoleName());
-        info.addStringPermissions(Collections.EMPTY_LIST);
+//        for(SysRole role:userInfo.getRoleList()){
+//            authorizationInfo.addRole(role.getRole());
+//            for(SysPermission p:role.getPermissions()){
+//                authorizationInfo.addStringPermission(p.getPermission());
+//            }
+//        }
         return info;
     }
 

@@ -1,6 +1,7 @@
 package com.sun.fighter.study.user.service.impl;
 
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.sun.fighter.study.dao.SysUserDao;
 import com.sun.fighter.study.domain.SysUser;
@@ -18,4 +19,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> implements SysUserService {
 
+    @Override
+    public SysUser findByUserName(String userName) {
+        SysUser sysUser = SysUser.builder().userName(userName).build();
+        EntityWrapper<SysUser> entityWrapper = new EntityWrapper<>(sysUser);
+        return selectOne(entityWrapper);
+    }
 }

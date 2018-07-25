@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -97,10 +98,6 @@ public class SysUser extends Model<SysUser> {
      */
     private String status;
     /**
-     * 是否锁定
-     */
-    private boolean locked;
-    /**
      * 删除标志（0代表存在 2代表删除）
      */
     @TableField("del_flag")
@@ -113,6 +110,7 @@ public class SysUser extends Model<SysUser> {
     /**
      * 最后登陆时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("login_date")
     private Date loginDate;
     /**
@@ -123,6 +121,7 @@ public class SysUser extends Model<SysUser> {
     /**
      * 创建时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("create_time")
     private Date createTime;
     /**
@@ -133,6 +132,7 @@ public class SysUser extends Model<SysUser> {
     /**
      * 更新时间
      */
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @TableField("update_time")
     private Date updateTime;
     /**
@@ -140,222 +140,9 @@ public class SysUser extends Model<SysUser> {
      */
     private String remark;
 
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getDeptId() {
-        return deptId;
-    }
-
-    public void setDeptId(Integer deptId) {
-        this.deptId = deptId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getNickName() {
-        return nickName;
-    }
-
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
-    }
-
-    public String getUserType() {
-        return userType;
-    }
-
-    public void setUserType(String userType) {
-        this.userType = userType;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getSex() {
-        return sex;
-    }
-
-    public void setSex(String sex) {
-        this.sex = sex;
-    }
-
-    public String getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getSalt() {
-        return salt;
-    }
-
-    public void setSalt(String salt) {
-        this.salt = salt;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public String getPersonalSign() {
-        return personalSign;
-    }
-
-    public void setPersonalSign(String personalSign) {
-        this.personalSign = personalSign;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(String delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    public String getLoginIp() {
-        return loginIp;
-    }
-
-    public void setLoginIp(String loginIp) {
-        this.loginIp = loginIp;
-    }
-
-    public Date getLoginDate() {
-        return loginDate;
-    }
-
-    public void setLoginDate(Date loginDate) {
-        this.loginDate = loginDate;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.userId;
     }
 
-    @Override
-    public String toString() {
-        return "SysUser{" +
-        ", userId=" + userId +
-        ", deptId=" + deptId +
-        ", userName=" + userName +
-        ", nickName=" + nickName +
-        ", userType=" + userType +
-        ", email=" + email +
-        ", phone=" + phone +
-        ", sex=" + sex +
-        ", avatar=" + avatar +
-        ", password=" + password +
-        ", salt=" + salt +
-        ", token=" + token +
-        ", uuid=" + uuid +
-        ", personalSign=" + personalSign +
-        ", status=" + status +
-        ", delFlag=" + delFlag +
-        ", loginIp=" + loginIp +
-        ", loginDate=" + loginDate +
-        ", createBy=" + createBy +
-        ", createTime=" + createTime +
-        ", updateBy=" + updateBy +
-        ", updateTime=" + updateTime +
-        ", remark=" + remark +
-        "}";
-    }
 }

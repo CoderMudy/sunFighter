@@ -13,4 +13,10 @@ import com.sun.fighter.study.domain.SysUser;
  */
 public interface SysUserService extends IService<SysUser> {
 
+    /**
+     * 通过登录账号查询用户信息
+     * @param userName
+     * @return
+     */
+    public SysUser findByUserName(String userName);
 }

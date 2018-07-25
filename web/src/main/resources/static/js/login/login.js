@@ -16,5 +16,5 @@ layui.config({
 	//登录按钮事件
 	form.on("submit(login)",function(data){
 		console.info(data);
-	})
+	});
 })
