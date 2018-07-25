@@ -85,21 +85,21 @@ public class KaptchaController {
      * @author stylefeng
      * @Date 2017/5/24 23:00
      */
-    @RequestMapping("/{pictureId}")
-    public void renderPicture(@PathVariable("pictureId") String pictureId, HttpServletResponse response) {
-        String path = sunProperties.getFileUploadPath() + pictureId;
-        try {
-            byte[] bytes = FileUtil.toByteArray(path);
-            response.getOutputStream().write(bytes);
-        } catch (Exception e) {
-            //如果找不到图片就返回一个默认图片
-            try {
-                response.sendRedirect("/static/img/girl.gif");
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
+//    @RequestMapping("/{pictureId}")
+//    public void renderPicture(@PathVariable("pictureId") String pictureId, HttpServletResponse response) {
+//        String path = sunProperties.getFileUploadPath() + pictureId;
+//        try {
+//            byte[] bytes = FileUtil.toByteArray(path);
+//            response.getOutputStream().write(bytes);
+//        } catch (Exception e) {
+//            //如果找不到图片就返回一个默认图片
+//            try {
+//                response.sendRedirect("/static/img/girl.gif");
+//            } catch (IOException e1) {
+//                e1.printStackTrace();
+//            }
+//        }
+//    }
 
     /**
      * 获取验证码 的 请求路径

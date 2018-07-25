@@ -42,19 +42,19 @@ public class SysUserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //获取用户的输入的账号.
         String username = (String) authenticationToken.getPrincipal();
-        log.info("登录账号：{}",username);
+        log.info("登录账号：{}", username);
         SysUser sysUser = sysUserService.findByUserName(username);
-        if(sysUser == null){
+        if (sysUser == null) {
             throw new UnknownAccountException();
         }
-        if("1".equals(sysUser.getStatus())){
+        if ("1".equals(sysUser.getStatus())) {
             throw new LockedAccountException();
         }
         // 从数据库查询出来的账号名和密码,与用户输入的账号和密码对比
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 username, //用户名
                 sysUser.getPassword(),//密码
-                ByteSource.Util.bytes(sysUser.getSalt()),//salt = 用户名+盐
+                ByteSource.Util.bytes(sysUser.getUserName() + sysUser.getSalt()),//salt = 用户名+盐
                 getName()); //realm name
         Session session = SecurityUtils.getSubject().getSession();
         session.setAttribute("USER_SESSION", sysUser);

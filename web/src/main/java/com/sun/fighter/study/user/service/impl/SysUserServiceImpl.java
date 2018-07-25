@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.sun.fighter.study.dao.SysUserDao;
 import com.sun.fighter.study.domain.SysUser;
 import com.sun.fighter.study.user.service.SysUserService;
+import com.sun.fighter.util.EndecryptUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -24,5 +25,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserDao, SysUser> impleme
         SysUser sysUser = SysUser.builder().userName(userName).build();
         EntityWrapper<SysUser> entityWrapper = new EntityWrapper<>(sysUser);
         return selectOne(entityWrapper);
+    }
+
+    @Override
+    public SysUser insertSysUser(SysUser sysUser) {
+        EndecryptUtils.md5Password(sysUser);
+        insert(sysUser);
+        return sysUser;
     }
 }

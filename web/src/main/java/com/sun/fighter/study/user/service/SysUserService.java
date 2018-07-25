@@ -19,4 +19,11 @@ public interface SysUserService extends IService<SysUser> {
      * @return
      */
     public SysUser findByUserName(String userName);
+
+    /**
+     * 新增用户
+     * @param sysUser
+     * @return
+     */
+    public SysUser insertSysUser(SysUser sysUser);
 }
