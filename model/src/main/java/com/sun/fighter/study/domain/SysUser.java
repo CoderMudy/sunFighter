@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
@@ -45,11 +47,14 @@ public class SysUser extends Model<SysUser> {
      * 登录账号
      */
     @TableField("user_name")
+    @NotBlank(message = "登录账号不能为空")
+    @Length(min = 6,max = 15,message = "登录账号长度需要在2-15个字之间")
     private String userName;
     /**
      * 用户昵称
      */
     @TableField("nick_name")
+    @NotBlank(message = "用户昵称不能为空")
     private String nickName;
     /**
      * 用户类型（00系统用户）
@@ -75,6 +80,7 @@ public class SysUser extends Model<SysUser> {
     /**
      * 密码
      */
+    @NotBlank(message = "用户密码不能为空")
     private String password;
     /**
      * 盐加密

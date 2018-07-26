@@ -1,7 +1,7 @@
 #sun
 sun:
   swagger-open: true #是否开启swagger
-  shiro-open: true #是否开启swagger
+  shiro-open: false #是否开启swagger
   kaptcha-open: false             #是否开启登录时验证码 (true/false)
 
 #tomcat
@@ -10,7 +10,7 @@ server:
     uri-encoding: UTF-8
     max-threads: 1000
     min-spare-threads: 30
-  port: 8080
+  port: 8081
 
 
 spring:
