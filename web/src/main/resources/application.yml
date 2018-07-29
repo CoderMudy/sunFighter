@@ -1,7 +1,7 @@
 #sun
 sun:
   swagger-open: true #是否开启swagger
-  shiro-open: false #是否开启swagger
+  shiro-open: true #是否开启swagger
   kaptcha-open: false             #是否开启登录时验证码 (true/false)
 
 #tomcat
