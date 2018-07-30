@@ -29,6 +29,11 @@
 			"icon" : "&#xe61c;",
 			"href" : "page/404.html",
 			"spread" : false
+		},{
+			"title" : "接口文旦",
+			"icon" : "&#xe61c;",
+			"href" : "/doc.html",
+			"spread" : false
 		},
 		{
 			"title" : "登录",
