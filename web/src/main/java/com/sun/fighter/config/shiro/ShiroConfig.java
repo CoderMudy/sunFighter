@@ -38,6 +38,8 @@ public class ShiroConfig {
         // 配置不会被拦截的链接 顺序判断
         filterChainDefinitionMap.put("/css/**", "anon");//匿名访问静态资源
         filterChainDefinitionMap.put("/js/**", "anon");//匿名访问静态资源
+        filterChainDefinitionMap.put("/images/**", "anon");//匿名访问静态资源
+        filterChainDefinitionMap.put("/json/**", "anon");//匿名访问静态资源
         filterChainDefinitionMap.put("/plugins/**", "anon");//匿名访问静态资源
         filterChainDefinitionMap.put("/login", "anon");//匿名访问静态资源
         filterChainDefinitionMap.put("/defaultKaptcha", "anon");

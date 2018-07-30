@@ -12,6 +12,12 @@
     <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/css/login/login.css}" media="all"/>
 </head>
+<body>
+<video class="video-player" preload="auto" autoplay="autoplay" loop="loop" data-height="1080" data-width="1920" height="1080" width="1920">
+    <source src="/css/login/login.mp4" type="video/mp4">
+    <!-- 此视频文件为支付宝所有，在此仅供样式参考，如用到商业用途，请自行更换为其他视频或图片，否则造成的任何问题使用者本人承担，谢谢 -->
+</video>
+<div class="video_mask"></div>
 <div class="login">
     <h1>管理登录</h1>
     <form class="layui-form" action="/login" method="post">
@@ -28,9 +34,9 @@
                    autocomplete="off">
             <div class="code"><img src="defaultKaptcha" width="116" height="36" onclick = "this.src='/defaultKaptcha?d='+new Date()*1" /></div>
         </div>
-        <div class="layui-form-item layui-bg-red" th:if = ${jsonData} th:text="${jsonData.msg}">
+        <div class="form_msg" th:if = ${jsonData} th:text="${jsonData.msg}">
         </div>
-        <button class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
+        <button class="layui-btn login_btn" lay-submit lay-filter="login">登录</button>
     </form>
 </div>
 <script type="text/javascript" src="/plugins/layui/layui.js"></script>
