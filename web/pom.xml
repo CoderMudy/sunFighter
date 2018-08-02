@@ -22,11 +22,11 @@
             <artifactId>dao</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.sun</groupId>-->
-            <!--<artifactId>sun-activiti</artifactId>-->
-            <!--<version>${project.version}</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>sun-activiti5</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
