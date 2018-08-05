@@ -7,9 +7,9 @@
     <artifactId>sun_fighter</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <modules>
-        <module>web</module>
-        <module>dao</module>
-        <module>model</module>
+        <module>sun-common</module>
+        <module>sun-service</module>
+        <module>sun-web</module>
         <module>sun-activiti5</module>
     </modules>
     <packaging>pom</packaging>
