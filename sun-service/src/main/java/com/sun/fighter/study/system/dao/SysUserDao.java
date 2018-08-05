@@ -1,7 +1,7 @@
-package com.sun.fighter.study.dao;
+package com.sun.fighter.study.system.dao;
 
 import com.baomidou.mybatisplus.mapper.BaseMapper;
-import com.sun.fighter.study.domain.SysUser;
+import com.sun.fighter.study.system.domain.SysUser;
 
 /**
  * <p>

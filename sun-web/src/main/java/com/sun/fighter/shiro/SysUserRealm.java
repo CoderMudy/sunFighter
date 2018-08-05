@@ -1,7 +1,7 @@
 package com.sun.fighter.shiro;
 
-import com.sun.fighter.study.domain.SysUser;
-import com.sun.fighter.study.user.service.SysUserService;
+import com.sun.fighter.study.system.domain.SysUser;
+import com.sun.fighter.study.system.service.SysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;

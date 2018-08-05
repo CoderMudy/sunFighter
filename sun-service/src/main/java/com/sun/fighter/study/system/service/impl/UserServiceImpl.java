@@ -1,9 +1,9 @@
-package com.sun.fighter.study.user.service.impl;
+package com.sun.fighter.study.system.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import com.sun.fighter.study.dao.UserDao;
-import com.sun.fighter.study.domain.User;
-import com.sun.fighter.study.user.service.UserService;
+import com.sun.fighter.study.system.dao.UserDao;
+import com.sun.fighter.study.system.domain.User;
+import com.sun.fighter.study.system.service.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

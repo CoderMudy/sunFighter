@@ -1,8 +1,8 @@
-package com.sun.fighter.study.dao;
+package com.sun.fighter.study.system.dao;
 
 import com.baomidou.mybatisplus.annotations.SqlParser;
 import com.sun.fighter.study.common.SuperDao;
-import com.sun.fighter.study.domain.User;
+import com.sun.fighter.study.system.domain.User;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;

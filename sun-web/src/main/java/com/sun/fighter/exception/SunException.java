@@ -1,6 +1,5 @@
 package com.sun.fighter.exception;
 
-import fighter.exception.SunExceptionEnum;
 
 /**
  * @创建人 chengyin

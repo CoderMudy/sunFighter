@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
-import com.sun.fighter.study.domain.User;
+import com.sun.fighter.study.system.domain.User;
 import com.sun.fighter.study.enums.AgeEnum;
 import com.sun.fighter.study.enums.PhoneEnum;
-import com.sun.fighter.study.user.service.UserService;
+import com.sun.fighter.study.system.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @创建人 chengyin

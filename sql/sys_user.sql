@@ -50,3 +50,67 @@ CREATE TABLE `sys_user` (
   UNIQUE KEY `phone` (`phone`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
+
+DROP TABLE IF EXISTS `sys_menu`;
+CREATE TABLE `sys_menu` (
+  `sys_menu_id` bigint(18) NOT NULL COMMENT '资源id',
+  `name` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '资源名称',
+	`parent_id` bigint(18) DEFAULT NULL COMMENT '父id',
+  `type` varchar(10) COLLATE utf8_bin DEFAULT NULL COMMENT '菜单类型，button或者menu',
+  `url` varchar(1000) COLLATE utf8_bin DEFAULT NULL COMMENT '链接地址',
+  `icon` varchar(1000) COLLATE utf8_bin DEFAULT NULL COMMENT '图标',
+  `show_flag` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT '是否展示',
+  `permission` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '权限标识',
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
+	`status` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT '删除标记Y：正常；N：删除；A：审核',
+	`remark` varchar(500) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+	`create_id` bigint(18) DEFAULT NULL COMMENT '创建者id',
+  `update_id` bigint(18) DEFAULT NULL COMMENT '修改者id',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`sys_menu_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统菜单sys_menu, 资源树，按钮';
+
+DROP TABLE IF EXISTS `sys_role`;
+CREATE TABLE `sys_role` (
+  `sys_role_id` int(5) NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(30) DEFAULT NULL COMMENT '角色名称',
+  `desc` varchar(50) DEFAULT NULL COMMENT '角色描述',
+  `code` varchar(20) DEFAULT NULL COMMENT '角色编号',
+  `create_id` int(11) DEFAULT NULL COMMENT '创建者id',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_id` datetime DEFAULT NULL COMMENT '修改者id',
+  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`sys_role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色表';
+
+DROP TABLE IF EXISTS `sys_role_permission`;
+CREATE TABLE `sys_role_permission` (
+  `sys_role_permission_id` bigint(18) NOT NULL COMMENT '系统资源id',
+  `sys_menu_id` bigint(18) NOT NULL COMMENT '资源id',
+  `sys_role_id` bigint(18) NOT NULL COMMENT '角色id',
+	`create_id` bigint(18) DEFAULT NULL COMMENT '创建者id',
+  `update_id` bigint(18) DEFAULT NULL COMMENT '修改者id',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  PRIMARY KEY (`sys_role_permission_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='角色权限表';
+
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log` (
+  `sys_log_id` bigint(18) NOT NULL COMMENT '日志id',
+  `module_name` varchar(500) COLLATE utf8_bin DEFAULT NULL COMMENT '模块名称',
+  `class_name` varchar(1000) COLLATE utf8_bin DEFAULT NULL COMMENT '全类名或者操作url',
+  `ip` varchar(15) COLLATE utf8_bin DEFAULT NULL COMMENT 'ip',
+  `msg` varchar(1000) COLLATE utf8_bin DEFAULT NULL COMMENT '信息',
+  `params` varchar(5000) COLLATE utf8_bin DEFAULT NULL COMMENT '请求参数',
+  `user_name` varchar(100) COLLATE utf8_bin DEFAULT NULL COMMENT '用户登录名',
+	`log_type` varchar(64) COLLATE utf8_bin DEFAULT NULL COMMENT '日志来源类型',
+  `times` bigint(13) DEFAULT NULL COMMENT '使用时长 毫米单位',
+	`create_id` bigint(18) DEFAULT NULL COMMENT '创建者id',
+  `update_id` bigint(18) DEFAULT NULL COMMENT '修改者id',
+  `create_date` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_date` datetime DEFAULT NULL COMMENT '修改时间',
+  `remark` varchar(500) COLLATE utf8_bin DEFAULT NULL COMMENT '备注信息',
+  PRIMARY KEY (`sys_log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='系统日志记录表';

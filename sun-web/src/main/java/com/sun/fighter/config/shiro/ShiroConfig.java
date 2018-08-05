@@ -1,7 +1,7 @@
 package com.sun.fighter.config.shiro;
 
 import com.sun.fighter.shiro.SysUserRealm;
-import com.sun.fighter.util.EndecryptUtils;
+import com.sun.fighter.study.util.EndecryptUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;

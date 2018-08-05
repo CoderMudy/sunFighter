@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @描述
  */
 @Configuration
-@MapperScan("com.sun.fighter.study.dao*")
+@MapperScan("com.sun.fighter.study.system.dao*")
 public class MybatisPlusConfig {
 
     /**

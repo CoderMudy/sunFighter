@@ -54,13 +54,13 @@ public class GeneratorServiceEntity {
         // strategy.setCapitalMode(true);// 全局大写命名 ORACLE 注意
 //        strategy.setTablePrefix(new String[] { "tlog_", "tsys_" });// 此处可以修改为您的表前缀
         strategy.setNaming(NamingStrategy.underline_to_camel);// 表名生成策略
-        strategy.setInclude(new String[]{"sys_user"}); // 需要生成的表
+        strategy.setInclude(new String[]{"sys_menu","sys_role","sys_role_permission","sys_log"}); // 需要生成的表
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         mpg.setStrategy(strategy);
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.sun.fighter.study.system.user");
+        pc.setParent("com.sun.fighter.study");
         mpg.setPackageInfo(pc);
 
         // 执行生成

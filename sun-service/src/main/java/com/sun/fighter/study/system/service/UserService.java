@@ -1,7 +1,7 @@
-package com.sun.fighter.study.user.service;
+package com.sun.fighter.study.system.service;
 
 import com.baomidou.mybatisplus.service.IService;
-import com.sun.fighter.study.domain.User;
+import com.sun.fighter.study.system.domain.User;
 
 import java.util.List;
 

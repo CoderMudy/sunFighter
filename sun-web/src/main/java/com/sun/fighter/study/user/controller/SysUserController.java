@@ -1,8 +1,8 @@
 package com.sun.fighter.study.user.controller;
 
 
-import com.sun.fighter.study.domain.SysUser;
-import com.sun.fighter.study.user.service.SysUserService;
+import com.sun.fighter.study.system.domain.SysUser;
+import com.sun.fighter.study.system.service.SysUserService;
 import com.sun.fighter.util.BeanValidator;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

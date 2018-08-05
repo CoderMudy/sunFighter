@@ -1,6 +1,6 @@
 package com.sun.fighter.util;
-import fighter.exception.SunException;
-import fighter.exception.SunExceptionEnum;
+import com.sun.fighter.exception.SunException;
+import com.sun.fighter.exception.SunExceptionEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

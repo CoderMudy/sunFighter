@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sun.fighter.study.mapper.SysRoleDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sun.fighter.study.system.domain.SysRole">
+        <id column="sys_role_id" property="sysRoleId" />
+        <result column="role_name" property="roleName" />
+        <result column="desc" property="desc" />
+        <result column="code" property="code" />
+        <result column="create_id" property="createId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_id" property="updateId" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        sys_role_id AS sysRoleId, role_name AS roleName, desc, code, create_id AS createId, create_time AS createTime, update_id AS updateId, update_time AS updateTime
+    </sql>
+
+</mapper>

@@ -1,4 +1,4 @@
-package com.sun.fighter.study.domain;
+package com.sun.fighter.study.system.domain;
 
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableLogic;

@@ -1,8 +1,8 @@
-package com.sun.fighter.util;
+package com.sun.fighter.study.util;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.sun.fighter.study.domain.SysUser;
+import com.sun.fighter.study.system.domain.SysUser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.shiro.codec.Base64;
 import org.apache.shiro.codec.Hex;

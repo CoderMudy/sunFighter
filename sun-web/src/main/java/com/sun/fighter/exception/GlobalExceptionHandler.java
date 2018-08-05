@@ -1,6 +1,6 @@
 package com.sun.fighter.exception;
 
-import fighter.common.JsonData;
+import com.sun.fighter.common.JsonData;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

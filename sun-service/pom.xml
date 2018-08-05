@@ -13,6 +13,11 @@
 
 
     <dependencies>
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>sun-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>
