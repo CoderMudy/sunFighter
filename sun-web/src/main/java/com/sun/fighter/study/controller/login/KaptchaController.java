@@ -1,4 +1,4 @@
-package com.sun.fighter.study.login;
+package com.sun.fighter.study.controller.login;
 
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;

@@ -1,4 +1,4 @@
-package com.sun.fighter.study.user.controller;
+package com.sun.fighter.study.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
