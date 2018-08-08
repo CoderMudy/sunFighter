@@ -15,6 +15,11 @@
     <dependencies>
         <dependency>
             <groupId>com.sun</groupId>
+            <artifactId>sun-common</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun</groupId>
             <artifactId>sun-service</artifactId>
             <version>${project.version}</version>
         </dependency>

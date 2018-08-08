@@ -1,4 +1,4 @@
-package com.sun.fighter.study.login;
+package com.sun.fighter.study.controller.login;
 
 import com.sun.fighter.common.JsonData;
 import io.swagger.annotations.ApiOperation;
@@ -36,7 +36,8 @@ public class LoginController {
 
     @ApiOperation("登录")
     @RequestMapping(value = "login",method = RequestMethod.POST)
-    public String login(ModelMap modelMap,String userName, String password){
+    public String login(String userName, String password){
+        ModelMap modelMap = new ModelMap();
         JsonData result = null;
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(userName,password);

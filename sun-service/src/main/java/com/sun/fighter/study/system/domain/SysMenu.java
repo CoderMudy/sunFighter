@@ -5,6 +5,12 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 
 /**
@@ -15,6 +21,10 @@ import java.io.Serializable;
  * @author chengyin
  * @since 2018-08-05
  */
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @TableName("sys_menu")
 public class SysMenu extends Model<SysMenu> {
 
@@ -23,7 +33,7 @@ public class SysMenu extends Model<SysMenu> {
     /**
      * 资源id
      */
-    @TableId("sys_menu_id")
+    @TableId(value = "sys_menu_id",type = IdType.AUTO)
     private Long sysMenuId;
     /**
      * 资源名称
@@ -88,150 +98,9 @@ public class SysMenu extends Model<SysMenu> {
     @TableField("update_date")
     private Date updateDate;
 
-
-    public Long getSysMenuId() {
-        return sysMenuId;
-    }
-
-    public void setSysMenuId(Long sysMenuId) {
-        this.sysMenuId = sysMenuId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getIcon() {
-        return icon;
-    }
-
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public String getShowFlag() {
-        return showFlag;
-    }
-
-    public void setShowFlag(String showFlag) {
-        this.showFlag = showFlag;
-    }
-
-    public String getPermission() {
-        return permission;
-    }
-
-    public void setPermission(String permission) {
-        this.permission = permission;
-    }
-
-    public Integer getSort() {
-        return sort;
-    }
-
-    public void setSort(Integer sort) {
-        this.sort = sort;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Long getCreateId() {
-        return createId;
-    }
-
-    public void setCreateId(Long createId) {
-        this.createId = createId;
-    }
-
-    public Long getUpdateId() {
-        return updateId;
-    }
-
-    public void setUpdateId(Long updateId) {
-        this.updateId = updateId;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
-
     @Override
     protected Serializable pkVal() {
         return this.sysMenuId;
     }
 
-    @Override
-    public String toString() {
-        return "SysMenu{" +
-        ", sysMenuId=" + sysMenuId +
-        ", name=" + name +
-        ", parentId=" + parentId +
-        ", type=" + type +
-        ", url=" + url +
-        ", icon=" + icon +
-        ", showFlag=" + showFlag +
-        ", permission=" + permission +
-        ", sort=" + sort +
-        ", status=" + status +
-        ", remark=" + remark +
-        ", createId=" + createId +
-        ", updateId=" + updateId +
-        ", createDate=" + createDate +
-        ", updateDate=" + updateDate +
-        "}";
-    }
 }
