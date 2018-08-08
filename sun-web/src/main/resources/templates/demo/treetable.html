@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <title>tree-table</title>
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" media="all"/>
+</head>
+<body>
+<div class="layui-container layui-text">
+    <br>
+    <h1>
+        Layui树形表格treetable -
+        <small><a href="https://gitee.com/whvse/treetable-lay" target="_blank">项目地址</a></small>
+    </h1>
+    <br>
+    <div class="layui-btn-group">
+        <button class="layui-btn" id="btn-expand">全部展开</button>
+        <button class="layui-btn" id="btn-fold">全部折叠</button>
+        <button class="layui-btn" id="btn-refresh">刷新表格</button>
+    </div>
+    &nbsp;
+    <div class="layui-btn-group">
+        <a class="layui-btn layui-btn-normal" href="menu.html">菜单管理</a>
+        <a class="layui-btn layui-btn-normal" href="test.html">深度测试</a>
+        <a class="layui-btn layui-btn-normal" href="test2.html">自定义图标</a>
+        <a class="layui-btn layui-btn-normal" href="test3.html">多表格</a>
+        <a class="layui-btn layui-btn-normal" href="test5.html">搜索功能</a>
+    </div>
+    &emsp;
+    <a class="layui-btn layui-btn-primary" href="https://whvse.gitee.io/treetable/" target="_blank">BOM树形表格</a>
+
+    <table id="table1" class="layui-table" lay-filter="table1"></table>
+</div>
+<!-- 操作列 -->
+<script type="text/html" id="oper-col">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+<script type="text/javascript" src="/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="/js/demo/treetable.js" ></script>
+
+</body>
+</html>

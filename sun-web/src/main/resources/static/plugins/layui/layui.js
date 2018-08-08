@@ -58,6 +58,7 @@
     ,upload: 'modules/upload' //上传
     ,tree: 'modules/tree' //树结构
     ,table: 'modules/table' //表格
+    ,treeGrid: 'modules/treeGrid' //treeGrid
     ,element: 'modules/element' //常用元素操作
     ,rate: 'modules/rate'  //评分组件
     ,carousel: 'modules/carousel' //轮播

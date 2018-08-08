@@ -22,4 +22,14 @@ public class PageController {
     public String main(){
         return "main/main";
     }
+
+    @GetMapping("treeTable")
+    public String treeTable(){
+        return "demo/treetable";
+    }
+
+    @GetMapping("treeGrid")
+    public String treeGrid(){
+        return "demo/treegrid";
+    }
 }

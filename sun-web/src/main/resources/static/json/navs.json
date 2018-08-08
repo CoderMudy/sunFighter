@@ -30,7 +30,7 @@
 			"href" : "page/404.html",
 			"spread" : false
 		},{
-			"title" : "接口文旦",
+			"title" : "接口文档",
 			"icon" : "&#xe61c;",
 			"href" : "/doc.html",
 			"spread" : false
@@ -41,6 +41,16 @@
 			"href" : "page/login/login.html",
 			"spread" : false,
 			"target" : "_blank"
+		},{
+			"title" : "树表",
+			"icon" : "&#xe61c;",
+			"href" : "/treeTable",
+			"spread" : false
+		},{
+			"title" : "树表1",
+			"icon" : "&#xe61c;",
+			"href" : "/treeGrid",
+			"spread" : false
 		}
 	]
 }]
