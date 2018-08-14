@@ -76,7 +76,7 @@ public class WebLogAspect {
                 .params(Arrays.toString(args))
                 .times(System.currentTimeMillis() - startTime)
                 .createDate(new Date()).build();
-        sysLogService.insert(sysLog);
+//        sysLogService.insert(sysLog);
     }
 
 //    @Before("webLog()")

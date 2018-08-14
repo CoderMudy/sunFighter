@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="AdminEAP">
+    <process id="vacationRequest" name="请假流程" isExecutable="true">
+        <startEvent id="start" name="开始" activiti:initiator="applyUserId">
+            <extensionElements>
+                <activiti:formProperty id="applyUserName" name="请假人姓名" type="string"></activiti:formProperty>
+            </extensionElements>
+        </startEvent>
+        <userTask id="handleRequest" name="请假填报" activiti:assignee="${applyUserId}">
+            <extensionElements>
+                <activiti:formProperty id="days" name="请假天数" type="long" expression="1" required="true"></activiti:formProperty>
+                <activiti:formProperty id="startDate" name="开始时间" type="date" datePattern="yyyy-MM-dd hh:mm" required="true"></activiti:formProperty>
+                <activiti:formProperty id="motivation" name="请假原因" type="string"></activiti:formProperty>
+            </extensionElements>
+        </userTask>
+        <exclusiveGateway id="daysDecision"></exclusiveGateway>
+        <userTask id="hrApproved" name="人事审批" activiti:candidateGroups="8a8a80f05cc32020015cc32f730f0008">
+            <documentation>${applyUserName} 请假${days}天，请假原因为${motivation}</documentation>
+            <extensionElements>
+                <activiti:formProperty id="vacationApproved" name="是否同意" type="enum" required="true">
+                    <activiti:value id="true" name="Approved"></activiti:value>
+                    <activiti:value id="false" name="Reject"></activiti:value>
+                </activiti:formProperty>
+                <activiti:formProperty id="motivationApproved" name="审批意见" type="string"></activiti:formProperty>
+            </extensionElements>
+        </userTask>
+        <userTask id="leaderApproved" name="领导审批" activiti:candidateGroups="8a8a80f05cc32020015cc32ee7c20007">
+            <documentation>${applyUserName} 请假${days}天，请假原因为${motivation}</documentation>
+            <extensionElements>
+                <activiti:formProperty id="vactionApproved" name="是否批准" type="enum" required="true">
+                    <activiti:value id="true" name="Approve"></activiti:value>
+                    <activiti:value id="false" name="Reject"></activiti:value>
+                </activiti:formProperty>
+                <activiti:formProperty id="motivationApproved" name="审批意见" type="string"></activiti:formProperty>
+            </extensionElements>
+        </userTask>
+        <exclusiveGateway id="leaderRequestApprovedDecision"></exclusiveGateway>
+        <exclusiveGateway id="hrRequestApprovedDecision"></exclusiveGateway>
+        <userTask id="vacationFinished" name="销假" activiti:assignee="${applyUserId}"></userTask>
+        <intermediateThrowEvent id="end" name="结束"></intermediateThrowEvent>
+        <sequenceFlow id="flow1" sourceRef="start" targetRef="handleRequest"></sequenceFlow>
+        <sequenceFlow id="flow9" sourceRef="vacationFinished" targetRef="end"></sequenceFlow>
+        <sequenceFlow id="flow3" name="大于30天" sourceRef="daysDecision" targetRef="hrApproved">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days>30}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow10" sourceRef="handleRequest" targetRef="daysDecision"></sequenceFlow>
+        <sequenceFlow id="flow2" name="少于等于30天" sourceRef="daysDecision" targetRef="leaderApproved">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${days<=30}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow4" sourceRef="leaderApproved" targetRef="leaderRequestApprovedDecision"></sequenceFlow>
+        <sequenceFlow id="flow11" sourceRef="hrApproved" targetRef="hrRequestApprovedDecision"></sequenceFlow>
+        <sequenceFlow id="flow8" name="同意" sourceRef="hrRequestApprovedDecision" targetRef="vacationFinished">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vacationApproved=='true'}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow7" name="不同意" sourceRef="hrRequestApprovedDecision" targetRef="handleRequest">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vacationApproved=='false'}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow6" name="同意" sourceRef="leaderRequestApprovedDecision" targetRef="vacationFinished">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vacationApproved=='true'}]]></conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="flow5" name="不同意" sourceRef="leaderRequestApprovedDecision" targetRef="handleRequest">
+            <conditionExpression xsi:type="tFormalExpression"><![CDATA[${vacationApproved=='false'}]]></conditionExpression>
+        </sequenceFlow>
+    </process>
+</definitions>

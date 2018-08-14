@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+    <process id="MDY_PURCHASE" name="美迪亚采购计划" isExecutable="true">
+        <startEvent id="start" name="开始" activiti:initiator="${starter}"/>
+        <userTask id="storekeeper" name="待仓库人员提交" activiti:candidateGroups="仓库人员,管理员">
+            <extensionElements>
+                <activiti:taskListener event="create" class="com.sun.fighter.listener.MyTaskListener"/>
+            </extensionElements>
+        </userTask>
+        <userTask id="hospitalPurchase" name="待医院采购审核" activiti:candidateGroups="采购专员,采购主管,管理员"/>
+        <exclusiveGateway id="hospitalPurchaseExclusive"/>
+        <userTask id="hospitalFinancial" name="待医院财务审核" activiti:candidateGroups="财务主管,财务专员,管理员"/>
+        <exclusiveGateway id="hospitalFinancialExclusive"/>
+        <userTask id="hospitalLeader" name="待医院领导审核" activiti:candidateGroups="院领导,管理员"/>
+        <exclusiveGateway id="hospitalLeaderExclusive"/>
+        <exclusiveGateway id="groupDirectorExclusive1"/>
+        <sequenceFlow id="sid-9CF38329-6235-49A9-B599-F79AD1842E40" sourceRef="hospitalFinancial" targetRef="hospitalFinancialExclusive"/>
+        <userTask id="groupPurchase" name="待集团采购" activiti:candidateGroups="购人员,集团管理员"/>
+        <exclusiveGateway id="groupPurchaseExclusive"/>
+        <sequenceFlow id="sid-0B2749C3-9224-4B7E-BF06-7B9C0D6507BF" sourceRef="groupPurchase" targetRef="groupPurchaseExclusive"/>
+        <userTask id="ownerGroupDirector" name="待集团终审" activiti:candidateGroups="采购总监,集团管理员"/>
+        <userTask id="groupAuditors" name="待集团稽核" activiti:candidateGroups="稽核人员,集团管理员"/>
+        <exclusiveGateway id="groupAuditorsExclusive"/>
+        <sequenceFlow id="sid-0BD76D85-DFE6-48DD-AF66-7524F81E4C06" sourceRef="groupAuditors" targetRef="groupAuditorsExclusive"/>
+        <userTask id="hasGroupDirector" name="待集团终审" activiti:candidateGroups="采购总监,集团管理员"/>
+        <exclusiveGateway id="ownerGroupDirectorExclusive"/>
+        <sequenceFlow id="sid-80A86243-4DDA-4682-BF8B-FFB2B9A6ECEB" sourceRef="ownerGroupDirector" targetRef="ownerGroupDirectorExclusive"/>
+        <userTask id="MDY_HospitalPurchaseOrder" name="待生成订单" activiti:candidateGroups="采购专员,采购主管,管理员"/>
+        <endEvent id="ownerEnd" name="结束"/>
+        <exclusiveGateway id="hasGroupDirectorExclusive"/>
+        <sequenceFlow id="sid-BFDA5698-00EC-457F-94ED-E0C35FB85C8C" sourceRef="hasGroupDirector" targetRef="hasGroupDirectorExclusive"/>
+        <userTask id="MDY_GroupPurchaseOrder" name="待生成订单" activiti:candidateGroups="购人员,集团管理员"/>
+        <endEvent id="hasEnd" name="结束"/>
+        <sequenceFlow id="sid-AD338965-3702-43E6-AFFB-6D9A73B217C8" sourceRef="start" targetRef="storekeeper"/>
+        <sequenceFlow id="sid-BD6D3F50-B313-438B-81FA-F61721663E28" name="不通过" sourceRef="groupDirectorExclusive1" targetRef="storekeeper">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupDirectorApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-807526DF-C89A-49CD-95E2-7E3D54475CC3" name="通过" sourceRef="groupDirectorExclusive1" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupDirectorApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-19B37088-5EE4-46B5-9EDF-8AAD371FAD02" name="自购" sourceRef="groupPurchaseExclusive" targetRef="ownerGroupDirector">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalBuy=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-5E36D568-2B8D-43AB-A05A-7BEF6F64A56A" name="不通过" sourceRef="groupAuditorsExclusive" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupAuditorsApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-76877B23-7D24-4722-A6A2-BBD48D780ED2" name="通过" sourceRef="hospitalFinancialExclusive" targetRef="hospitalLeader">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalFinancialApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-3A44BF25-FD23-4F2E-B93D-18B1B64C1515" name="通过" sourceRef="hasGroupDirectorExclusive" targetRef="MDY_GroupPurchaseOrder">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupDirectorApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <userTask id="groupAuditorsFirst" name="待集团稽核初审" activiti:candidateGroups="稽核人员,集团管理员"/>
+        <exclusiveGateway id="sid-4221252B-41BF-4C4D-8D7B-3B0DB1A01FFC"/>
+        <sequenceFlow id="sid-F154DA77-B048-4EF9-878C-E8466A66CC54" name="已购" sourceRef="groupPurchaseExclusive" targetRef="groupAuditors">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalBuy=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-262914E5-8ADC-4A4F-BC7A-02435787EE3F" name="通过" sourceRef="groupAuditorsExclusive" targetRef="hasGroupDirector">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupAuditorsApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-E02EE2AE-6202-4691-9ECE-1C0A0C2CAB7C" name="不通过" sourceRef="sid-4221252B-41BF-4C4D-8D7B-3B0DB1A01FFC" targetRef="storekeeper">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupAuditorsApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-2D2816FB-0B3D-4A4B-879B-0A3C618E1450" name="通过" sourceRef="sid-4221252B-41BF-4C4D-8D7B-3B0DB1A01FFC" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupAuditorsApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-68D76BF9-4943-4961-A3D1-5531B977B2EC" sourceRef="hospitalLeader" targetRef="hospitalLeaderExclusive"/>
+        <sequenceFlow id="sid-6DDDB210-D5F5-4E8C-9B12-6BD6C6627FD0" sourceRef="hospitalPurchase" targetRef="hospitalPurchaseExclusive"/>
+        <userTask id="hospitalPharmacy" name="待医院药剂科审核" activiti:candidateGroups="管理员,医院药剂科"/>
+        <sequenceFlow id="sid-482DD583-1075-4DB0-AADD-F704D897E82C" sourceRef="storekeeper" targetRef="hospitalPharmacy"/>
+        <exclusiveGateway id="sid-7DC4B2EF-2679-44F1-A691-1A87678F75CF"/>
+        <sequenceFlow id="sid-6C0C5C82-E80F-4014-B401-40DCFF241ABE" sourceRef="hospitalPharmacy" targetRef="sid-7DC4B2EF-2679-44F1-A691-1A87678F75CF"/>
+        <sequenceFlow id="sid-F4755FCB-5915-4191-A864-9FA7D02F709F" name="不通过" sourceRef="hospitalFinancialExclusive" targetRef="storekeeper">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalFinancialApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-74D0FA1D-9804-469B-87FD-773CF2C866D2" name="通过" sourceRef="hospitalPurchaseExclusive" targetRef="hospitalFinancial">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalPurchaseApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-73BF78A5-BAD0-4957-B585-6C73149BC36E" name="不通过" sourceRef="hospitalPurchaseExclusive" targetRef="storekeeper">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalPurchaseApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-F2461E0C-7132-47E7-A88A-95069132EBA9" name="通过" sourceRef="sid-7DC4B2EF-2679-44F1-A691-1A87678F75CF" targetRef="hospitalPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalPharmacyApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-941A8663-E914-4608-9C72-D0C73B036B77" name="不通过" sourceRef="sid-7DC4B2EF-2679-44F1-A691-1A87678F75CF" targetRef="storekeeper">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalPharmacyApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <exclusiveGateway id="sid-F83613BE-04FE-45B8-9843-D9550EC25DBD"/>
+        <exclusiveGateway id="sid-9AEDC7F5-3929-4F3F-A7A8-991690A765FB"/>
+        <sequenceFlow id="sid-3977C1B8-D53F-4D4A-911F-CBB8771B5CC2" name="不通过" sourceRef="hasGroupDirectorExclusive" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupDirectorApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-0DA18B42-218C-44FF-8001-C23AA2EA88E0" name="通过" sourceRef="ownerGroupDirectorExclusive" targetRef="MDY_HospitalPurchaseOrder">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupDirectorApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-3017D8AA-E139-43D7-8828-AC82BD8DB177" sourceRef="MDY_HospitalPurchaseOrder" targetRef="sid-F83613BE-04FE-45B8-9843-D9550EC25DBD"/>
+        <sequenceFlow id="sid-EF546002-A32F-4E46-B872-9BF44D3F8736" sourceRef="MDY_GroupPurchaseOrder" targetRef="sid-9AEDC7F5-3929-4F3F-A7A8-991690A765FB"/>
+        <sequenceFlow id="sid-903F6512-112C-4EE8-9E24-963112BF960D" name="不通过" sourceRef="ownerGroupDirectorExclusive" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupDirectorApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-C73E02F0-54B4-40E0-AB1E-DB21E54A3FBF" name="打回" sourceRef="sid-9AEDC7F5-3929-4F3F-A7A8-991690A765FB" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupOrderApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-5DBB6D44-D564-4B21-8011-D46C8FF6B39F" name="打回" sourceRef="sid-F83613BE-04FE-45B8-9843-D9550EC25DBD" targetRef="groupPurchase">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalOrderApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-88C1DD7C-F8A8-46B7-B9FC-42E94A765394" name="生成订单" sourceRef="sid-F83613BE-04FE-45B8-9843-D9550EC25DBD" targetRef="ownerEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalOrderApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-F6B99B8F-5303-4882-95C5-439040C99739" name="生成订单" sourceRef="sid-9AEDC7F5-3929-4F3F-A7A8-991690A765FB" targetRef="hasEnd">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${groupOrderApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-7B1893BC-3A05-4FE0-9A6B-DDFF754ACC76" name="通过" sourceRef="hospitalLeaderExclusive" targetRef="groupAuditorsFirst">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalLeaderApprove=='true'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-0B880B37-13B8-4596-BD41-2ADB7449C636" name="不通过" sourceRef="hospitalLeaderExclusive" targetRef="storekeeper">
+            <conditionExpression xsi:type="tFormalExpression">
+                <![CDATA[ ${hospitalLeaderApprove=='false'} ]]>
+            </conditionExpression>
+        </sequenceFlow>
+        <sequenceFlow id="sid-C8787EC9-7094-497A-BB8E-29C2F6E8CA04" sourceRef="groupAuditorsFirst" targetRef="sid-4221252B-41BF-4C4D-8D7B-3B0DB1A01FFC"/>
+    </process>
+    <bpmndi:BPMNDiagram id="BPMNDiagram_MDY_PURCHASE">
+        <bpmndi:BPMNPlane bpmnElement="MDY_PURCHASE" id="BPMNPlane_MDY_PURCHASE">
+            <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+                <omgdc:Bounds height="30.0" width="30.0" x="15.0" y="73.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="storekeeper" id="BPMNShape_storekeeper">
+                <omgdc:Bounds height="76.0" width="106.0" x="101.0" y="53.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalPurchase" id="BPMNShape_hospitalPurchase">
+                <omgdc:Bounds height="80.0" width="100.0" x="456.0" y="51.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalPurchaseExclusive" id="BPMNShape_hospitalPurchaseExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="590.0" y="73.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalFinancial" id="BPMNShape_hospitalFinancial">
+                <omgdc:Bounds height="80.0" width="100.0" x="667.0" y="53.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalFinancialExclusive" id="BPMNShape_hospitalFinancialExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="799.0" y="73.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalLeader" id="BPMNShape_hospitalLeader">
+                <omgdc:Bounds height="80.0" width="100.0" x="894.0" y="53.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalLeaderExclusive" id="BPMNShape_hospitalLeaderExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="924.0" y="171.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="groupDirectorExclusive1" id="BPMNShape_groupDirectorExclusive1">
+                <omgdc:Bounds height="40.0" width="40.0" x="51.0" y="220.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="groupPurchase" id="BPMNShape_groupPurchase">
+                <omgdc:Bounds height="80.0" width="100.0" x="104.0" y="403.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="groupPurchaseExclusive" id="BPMNShape_groupPurchaseExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="306.0" y="423.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="ownerGroupDirector" id="BPMNShape_ownerGroupDirector">
+                <omgdc:Bounds height="80.0" width="100.0" x="420.0" y="403.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="groupAuditors" id="BPMNShape_groupAuditors">
+                <omgdc:Bounds height="80.0" width="100.0" x="276.0" y="508.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="groupAuditorsExclusive" id="BPMNShape_groupAuditorsExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="450.0" y="528.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hasGroupDirector" id="BPMNShape_hasGroupDirector">
+                <omgdc:Bounds height="80.0" width="100.0" x="587.0" y="508.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="ownerGroupDirectorExclusive" id="BPMNShape_ownerGroupDirectorExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="657.0" y="423.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="MDY_HospitalPurchaseOrder" id="BPMNShape_MDY_HospitalPurchaseOrder">
+                <omgdc:Bounds height="80.0" width="100.0" x="840.0" y="403.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="ownerEnd" id="BPMNShape_ownerEnd">
+                <omgdc:Bounds height="28.0" width="28.0" x="1120.0" y="429.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hasGroupDirectorExclusive" id="BPMNShape_hasGroupDirectorExclusive">
+                <omgdc:Bounds height="40.0" width="40.0" x="759.0" y="528.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="MDY_GroupPurchaseOrder" id="BPMNShape_MDY_GroupPurchaseOrder">
+                <omgdc:Bounds height="80.0" width="100.0" x="854.0" y="508.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hasEnd" id="BPMNShape_hasEnd">
+                <omgdc:Bounds height="28.0" width="28.0" x="1120.0" y="534.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="groupAuditorsFirst" id="BPMNShape_groupAuditorsFirst">
+                <omgdc:Bounds height="57.0" width="103.0" x="418.0" y="238.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-4221252B-41BF-4C4D-8D7B-3B0DB1A01FFC" id="BPMNShape_sid-4221252B-41BF-4C4D-8D7B-3B0DB1A01FFC">
+                <omgdc:Bounds height="40.0" width="40.0" x="133.0" y="246.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="hospitalPharmacy" id="BPMNShape_hospitalPharmacy">
+                <omgdc:Bounds height="80.0" width="100.0" x="252.0" y="51.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-7DC4B2EF-2679-44F1-A691-1A87678F75CF" id="BPMNShape_sid-7DC4B2EF-2679-44F1-A691-1A87678F75CF">
+                <omgdc:Bounds height="40.0" width="40.0" x="377.0" y="71.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-F83613BE-04FE-45B8-9843-D9550EC25DBD" id="BPMNShape_sid-F83613BE-04FE-45B8-9843-D9550EC25DBD">
+                <omgdc:Bounds height="40.0" width="40.0" x="1019.0" y="423.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNShape bpmnElement="sid-9AEDC7F5-3929-4F3F-A7A8-991690A765FB" id="BPMNShape_sid-9AEDC7F5-3929-4F3F-A7A8-991690A765FB">
+                <omgdc:Bounds height="40.0" width="40.0" x="1019.0" y="528.0"/>
+            </bpmndi:BPMNShape>
+            <bpmndi:BPMNEdge bpmnElement="sid-AD338965-3702-43E6-AFFB-6D9A73B217C8" id="BPMNEdge_sid-AD338965-3702-43E6-AFFB-6D9A73B217C8">
+                <omgdi:waypoint x="44.99561196785722" y="88.36279706373848"/>
+                <omgdi:waypoint x="101.0" y="89.71774193548387"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-0DA18B42-218C-44FF-8001-C23AA2EA88E0" id="BPMNEdge_sid-0DA18B42-218C-44FF-8001-C23AA2EA88E0">
+                <omgdi:waypoint x="697.0" y="443.0"/>
+                <omgdi:waypoint x="840.0" y="443.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-C73E02F0-54B4-40E0-AB1E-DB21E54A3FBF" id="BPMNEdge_sid-C73E02F0-54B4-40E0-AB1E-DB21E54A3FBF">
+                <omgdi:waypoint x="1039.0" y="568.0"/>
+                <omgdi:waypoint x="1039.0" y="652.0"/>
+                <omgdi:waypoint x="83.0" y="652.0"/>
+                <omgdi:waypoint x="83.0" y="552.0"/>
+                <omgdi:waypoint x="127.94495412844037" y="483.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-19B37088-5EE4-46B5-9EDF-8AAD371FAD02" id="BPMNEdge_sid-19B37088-5EE4-46B5-9EDF-8AAD371FAD02">
+                <omgdi:waypoint x="346.0" y="443.0"/>
+                <omgdi:waypoint x="420.0" y="443.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-3017D8AA-E139-43D7-8828-AC82BD8DB177" id="BPMNEdge_sid-3017D8AA-E139-43D7-8828-AC82BD8DB177">
+                <omgdi:waypoint x="940.0" y="443.0"/>
+                <omgdi:waypoint x="1019.0" y="443.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-3A44BF25-FD23-4F2E-B93D-18B1B64C1515" id="BPMNEdge_sid-3A44BF25-FD23-4F2E-B93D-18B1B64C1515">
+                <omgdi:waypoint x="799.0" y="548.0"/>
+                <omgdi:waypoint x="854.0" y="548.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F154DA77-B048-4EF9-878C-E8466A66CC54" id="BPMNEdge_sid-F154DA77-B048-4EF9-878C-E8466A66CC54">
+                <omgdi:waypoint x="326.0" y="463.0"/>
+                <omgdi:waypoint x="326.0" y="508.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-68D76BF9-4943-4961-A3D1-5531B977B2EC" id="BPMNEdge_sid-68D76BF9-4943-4961-A3D1-5531B977B2EC">
+                <omgdi:waypoint x="944.0" y="133.0"/>
+                <omgdi:waypoint x="944.0" y="171.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-0BD76D85-DFE6-48DD-AF66-7524F81E4C06" id="BPMNEdge_sid-0BD76D85-DFE6-48DD-AF66-7524F81E4C06">
+                <omgdi:waypoint x="376.0" y="548.0"/>
+                <omgdi:waypoint x="450.0" y="548.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-74D0FA1D-9804-469B-87FD-773CF2C866D2" id="BPMNEdge_sid-74D0FA1D-9804-469B-87FD-773CF2C866D2">
+                <omgdi:waypoint x="630.0" y="93.0"/>
+                <omgdi:waypoint x="667.0" y="93.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-941A8663-E914-4608-9C72-D0C73B036B77" id="BPMNEdge_sid-941A8663-E914-4608-9C72-D0C73B036B77">
+                <omgdi:waypoint x="395.7692307692308" y="72.23076923076923"/>
+                <omgdi:waypoint x="393.0" y="30.0"/>
+                <omgdi:waypoint x="180.0" y="30.0"/>
+                <omgdi:waypoint x="170.19672131147541" y="53.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-73BF78A5-BAD0-4957-B585-6C73149BC36E" id="BPMNEdge_sid-73BF78A5-BAD0-4957-B585-6C73149BC36E">
+                <omgdi:waypoint x="610.0" y="73.0"/>
+                <omgdi:waypoint x="610.0" y="9.0"/>
+                <omgdi:waypoint x="154.0" y="9.0"/>
+                <omgdi:waypoint x="154.0" y="53.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-262914E5-8ADC-4A4F-BC7A-02435787EE3F" id="BPMNEdge_sid-262914E5-8ADC-4A4F-BC7A-02435787EE3F">
+                <omgdi:waypoint x="490.0" y="548.0"/>
+                <omgdi:waypoint x="587.0" y="548.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-80A86243-4DDA-4682-BF8B-FFB2B9A6ECEB" id="BPMNEdge_sid-80A86243-4DDA-4682-BF8B-FFB2B9A6ECEB">
+                <omgdi:waypoint x="520.0" y="443.0"/>
+                <omgdi:waypoint x="657.0" y="443.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-6C0C5C82-E80F-4014-B401-40DCFF241ABE" id="BPMNEdge_sid-6C0C5C82-E80F-4014-B401-40DCFF241ABE">
+                <omgdi:waypoint x="352.0" y="91.0"/>
+                <omgdi:waypoint x="377.0" y="91.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-7B1893BC-3A05-4FE0-9A6B-DDFF754ACC76" id="BPMNEdge_sid-7B1893BC-3A05-4FE0-9A6B-DDFF754ACC76">
+                <omgdi:waypoint x="944.0" y="211.0"/>
+                <omgdi:waypoint x="944.0" y="270.0"/>
+                <omgdi:waypoint x="521.0" y="266.8798735511064"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-76877B23-7D24-4722-A6A2-BBD48D780ED2" id="BPMNEdge_sid-76877B23-7D24-4722-A6A2-BBD48D780ED2">
+                <omgdi:waypoint x="839.0" y="93.0"/>
+                <omgdi:waypoint x="894.0" y="93.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-E02EE2AE-6202-4691-9ECE-1C0A0C2CAB7C" id="BPMNEdge_sid-E02EE2AE-6202-4691-9ECE-1C0A0C2CAB7C">
+                <omgdi:waypoint x="153.11363636363637" y="246.11363636363637"/>
+                <omgdi:waypoint x="153.78285714285715" y="129.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-88C1DD7C-F8A8-46B7-B9FC-42E94A765394" id="BPMNEdge_sid-88C1DD7C-F8A8-46B7-B9FC-42E94A765394">
+                <omgdi:waypoint x="1059.0" y="443.0"/>
+                <omgdi:waypoint x="1120.0" y="443.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-9CF38329-6235-49A9-B599-F79AD1842E40" id="BPMNEdge_sid-9CF38329-6235-49A9-B599-F79AD1842E40">
+                <omgdi:waypoint x="767.0" y="93.0"/>
+                <omgdi:waypoint x="799.0" y="93.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-0B2749C3-9224-4B7E-BF06-7B9C0D6507BF" id="BPMNEdge_sid-0B2749C3-9224-4B7E-BF06-7B9C0D6507BF">
+                <omgdi:waypoint x="204.0" y="443.0"/>
+                <omgdi:waypoint x="306.0" y="443.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F2461E0C-7132-47E7-A88A-95069132EBA9" id="BPMNEdge_sid-F2461E0C-7132-47E7-A88A-95069132EBA9">
+                <omgdi:waypoint x="417.0" y="91.0"/>
+                <omgdi:waypoint x="456.0" y="91.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-C8787EC9-7094-497A-BB8E-29C2F6E8CA04" id="BPMNEdge_sid-C8787EC9-7094-497A-BB8E-29C2F6E8CA04">
+                <omgdi:waypoint x="418.0" y="266.4186413902054"/>
+                <omgdi:waypoint x="172.96845425867508" y="266.0315457413249"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-5E36D568-2B8D-43AB-A05A-7BEF6F64A56A" id="BPMNEdge_sid-5E36D568-2B8D-43AB-A05A-7BEF6F64A56A">
+                <omgdi:waypoint x="470.0" y="568.0"/>
+                <omgdi:waypoint x="470.0" y="625.0"/>
+                <omgdi:waypoint x="154.0" y="625.0"/>
+                <omgdi:waypoint x="154.0" y="483.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-EF546002-A32F-4E46-B872-9BF44D3F8736" id="BPMNEdge_sid-EF546002-A32F-4E46-B872-9BF44D3F8736">
+                <omgdi:waypoint x="954.0" y="548.0"/>
+                <omgdi:waypoint x="1019.0" y="548.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-BFDA5698-00EC-457F-94ED-E0C35FB85C8C" id="BPMNEdge_sid-BFDA5698-00EC-457F-94ED-E0C35FB85C8C">
+                <omgdi:waypoint x="687.0" y="548.0"/>
+                <omgdi:waypoint x="759.0" y="548.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-2D2816FB-0B3D-4A4B-879B-0A3C618E1450" id="BPMNEdge_sid-2D2816FB-0B3D-4A4B-879B-0A3C618E1450">
+                <omgdi:waypoint x="153.1123595505618" y="285.8876404494382"/>
+                <omgdi:waypoint x="153.77401129943502" y="403.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-6DDDB210-D5F5-4E8C-9B12-6BD6C6627FD0" id="BPMNEdge_sid-6DDDB210-D5F5-4E8C-9B12-6BD6C6627FD0">
+                <omgdi:waypoint x="556.0" y="91.96153846153845"/>
+                <omgdi:waypoint x="590.377358490566" y="92.62264150943396"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-0B880B37-13B8-4596-BD41-2ADB7449C636" id="BPMNEdge_sid-0B880B37-13B8-4596-BD41-2ADB7449C636">
+                <omgdi:waypoint x="924.0" y="191.0"/>
+                <omgdi:waypoint x="180.0" y="191.0"/>
+                <omgdi:waypoint x="163.88" y="129.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-482DD583-1075-4DB0-AADD-F704D897E82C" id="BPMNEdge_sid-482DD583-1075-4DB0-AADD-F704D897E82C">
+                <omgdi:waypoint x="207.0" y="91.0"/>
+                <omgdi:waypoint x="252.0" y="91.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-903F6512-112C-4EE8-9E24-963112BF960D" id="BPMNEdge_sid-903F6512-112C-4EE8-9E24-963112BF960D">
+                <omgdi:waypoint x="677.0" y="423.0"/>
+                <omgdi:waypoint x="677.0" y="372.0"/>
+                <omgdi:waypoint x="210.0" y="372.0"/>
+                <omgdi:waypoint x="185.54929577464787" y="403.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-BD6D3F50-B313-438B-81FA-F61721663E28" id="BPMNEdge_sid-BD6D3F50-B313-438B-81FA-F61721663E28">
+                <omgdi:waypoint x="71.0" y="220.0"/>
+                <omgdi:waypoint x="71.0" y="95.0"/>
+                <omgdi:waypoint x="101.0" y="93.55421686746988"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-3977C1B8-D53F-4D4A-911F-CBB8771B5CC2" id="BPMNEdge_sid-3977C1B8-D53F-4D4A-911F-CBB8771B5CC2">
+                <omgdi:waypoint x="779.0" y="568.0"/>
+                <omgdi:waypoint x="779.0" y="639.0"/>
+                <omgdi:waypoint x="115.0" y="639.0"/>
+                <omgdi:waypoint x="115.0" y="564.0"/>
+                <omgdi:waypoint x="141.10743801652893" y="483.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-807526DF-C89A-49CD-95E2-7E3D54475CC3" id="BPMNEdge_sid-807526DF-C89A-49CD-95E2-7E3D54475CC3">
+                <omgdi:waypoint x="71.0" y="260.0"/>
+                <omgdi:waypoint x="71.0" y="442.0"/>
+                <omgdi:waypoint x="104.0" y="442.3975903614458"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F4755FCB-5915-4191-A864-9FA7D02F709F" id="BPMNEdge_sid-F4755FCB-5915-4191-A864-9FA7D02F709F">
+                <omgdi:waypoint x="819.0" y="113.0"/>
+                <omgdi:waypoint x="819.0" y="162.0"/>
+                <omgdi:waypoint x="247.0" y="162.0"/>
+                <omgdi:waypoint x="203.77464788732394" y="129.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-5DBB6D44-D564-4B21-8011-D46C8FF6B39F" id="BPMNEdge_sid-5DBB6D44-D564-4B21-8011-D46C8FF6B39F">
+                <omgdi:waypoint x="1039.0" y="423.0"/>
+                <omgdi:waypoint x="1039.0" y="333.0"/>
+                <omgdi:waypoint x="179.0" y="333.0"/>
+                <omgdi:waypoint x="163.0909090909091" y="403.0"/>
+            </bpmndi:BPMNEdge>
+            <bpmndi:BPMNEdge bpmnElement="sid-F6B99B8F-5303-4882-95C5-439040C99739" id="BPMNEdge_sid-F6B99B8F-5303-4882-95C5-439040C99739">
+                <omgdi:waypoint x="1059.0" y="548.0"/>
+                <omgdi:waypoint x="1120.0" y="548.0"/>
+            </bpmndi:BPMNEdge>
+        </bpmndi:BPMNPlane>
+    </bpmndi:BPMNDiagram>
+</definitions>

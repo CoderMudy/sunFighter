@@ -44,7 +44,7 @@
         <mysql.version>5.1.36</mysql.version>
         <shiro.version>1.4.0</shiro.version>
         <swagger.version>2.9.2</swagger.version>
-        <swagger.ui.version>1.7.9</swagger.ui.version>
+        <swagger.ui.version>1.8.0</swagger.ui.version>
         <druid.version>1.1.10</druid.version>
         <fastjson.version>1.2.39</fastjson.version>
         <kaptcha.version>2.3.2</kaptcha.version>
