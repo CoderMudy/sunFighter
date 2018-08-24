@@ -1,10 +1,9 @@
 package com.sun.fighter.activiti;
 
 import com.sun.fighter.SunFighterApplication;
-import com.sun.fighter.util.ActivitiUtil;
-import org.activiti.bpmn.model.BpmnModel;
-import org.activiti.bpmn.model.FlowElement;
-import org.activiti.bpmn.model.UserTask;
+import org.activiti.bpmn.converter.BpmnXMLConverter;
+import org.activiti.bpmn.model.*;
+import org.activiti.bpmn.model.Process;
 import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
@@ -20,6 +19,7 @@ import org.activiti.engine.impl.pvm.PvmActivity;
 import org.activiti.engine.impl.pvm.PvmTransition;
 import org.activiti.engine.impl.pvm.process.ActivityImpl;
 import org.activiti.engine.impl.task.TaskDefinition;
+import org.activiti.engine.impl.util.io.InputStreamSource;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.Execution;
@@ -35,9 +35,7 @@ import javax.annotation.Resource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = SunFighterApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -49,6 +47,28 @@ public class ActivitiTest {
     private RuntimeService runtimeService;
     @Resource
     private TaskService taskService;
+
+    @Test
+    public void test(){
+        InputStream xmlStream = this.getClass().getClassLoader().getResourceAsStream("processes/MDY_PURCHASE.bpmn20.xml");
+        InputStreamSource xmlSource = new InputStreamSource(xmlStream);
+        BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
+        BpmnModel bpmnModel = bpmnXMLConverter.convertToBpmnModel(xmlSource,true,false,"UTF-8");
+        //bpmnModel 转换为标准的bpmn xml文件
+        byte[] convertToXML = bpmnXMLConverter.convertToXML(bpmnModel);
+        String bytes = new String(convertToXML);
+        System.out.println("流程图XML：" + bytes);
+        Process process = bpmnModel.getProcessById("MDY_PURCHASE");
+        List<FlowElement> flowElements = (List<FlowElement>) process.getFlowElements();
+        for(FlowElement flowElement : flowElements){
+            if(flowElement instanceof ExclusiveGateway){
+                List<SequenceFlow> sequenceFlows =  ((ExclusiveGateway) flowElement).getOutgoingFlows();
+                for(SequenceFlow sequenceFlow : sequenceFlows){
+                    System.out.println();
+                }
+            }
+        }
+    }
 
     @Test
     public void testDeploy() throws IOException {
