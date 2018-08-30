@@ -51,6 +51,11 @@
 			"icon" : "&#xe61c;",
 			"href" : "/treeGrid",
 			"spread" : false
+		},{
+			"title" : "用户",
+			"icon" : "&#xe61c;",
+			"href" : "/userList",
+			"spread" : false
 		}
 	]
 }]

@@ -32,4 +32,11 @@ public class PageController {
     public String treeGrid(){
         return "demo/treegrid";
     }
+
+    @GetMapping("userList")
+    public String userList(){
+        return "system/userList";
+    }
+
+
 }
