@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>菜单管理</title>
+    <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" media="all"/>
+</head>
+<body>
+
+<table id="menuTable" class="layui-table" lay-filter="menuTable"></table>
+
+<!-- 操作列 -->
+<script type="text/html" id="menuOperator">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="edit">修改</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/javascript" src="/plugins/layui/layui.js"></script>
+<script type="text/javascript" src="/js/system/menuList.js"></script>
+</body>
+</html>

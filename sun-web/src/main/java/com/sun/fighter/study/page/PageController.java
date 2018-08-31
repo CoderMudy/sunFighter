@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class PageController {
 
-    @GetMapping("index")
+    @GetMapping
     public String index(){
         return "index";
     }
@@ -38,5 +38,9 @@ public class PageController {
         return "system/userList";
     }
 
+    @GetMapping("toMenuList")
+    public String toSyeMenu(){
+        return "system/menuList";
+    }
 
 }

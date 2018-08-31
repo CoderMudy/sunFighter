@@ -1,106 +1,152 @@
 package com.sun.fighter.study.system.domain;
 
-import java.util.Date;
+import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableName;
-import com.baomidou.mybatisplus.enums.IdType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.io.Serializable;
 
 /**
  * <p>
- * 系统菜单sys_menu, 资源树，按钮
+ * 菜单管理
  * </p>
  *
  * @author chengyin
- * @since 2018-08-05
+ * @since 2018-08-31
  */
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @TableName("sys_menu")
 public class SysMenu extends Model<SysMenu> {
 
     private static final long serialVersionUID = 1L;
 
+    @TableId(value = "menu_id", type = IdType.AUTO)
+    private Long menuId;
     /**
-     * 资源id
-     */
-    @TableId(value = "sys_menu_id",type = IdType.AUTO)
-    private Long sysMenuId;
-    /**
-     * 资源名称
-     */
-    private String name;
-    /**
-     * 父id
+     * 父菜单ID，一级菜单为0
      */
     @TableField("parent_id")
     private Long parentId;
     /**
-     * 菜单类型，button或者menu
+     * 菜单名称
      */
-    private String type;
+    private String name;
     /**
-     * 链接地址
+     * 菜单URL
      */
     private String url;
     /**
-     * 图标
+     * 授权(多个用逗号分隔，如：user:list,user:create)
+     */
+    private String perms;
+    /**
+     * 类型   0：目录   1：菜单   2：按钮
+     */
+    private Integer type;
+    /**
+     * 菜单图标
      */
     private String icon;
     /**
-     * 是否展示
-     */
-    @TableField("show_flag")
-    private String showFlag;
-    /**
-     * 权限标识
-     */
-    private String permission;
-    /**
      * 排序
      */
-    private Integer sort;
+    @TableField("order_num")
+    private Integer orderNum;
     /**
-     * 删除标记Y：正常；N：删除；A：审核
-     */
-    private String status;
-    /**
-     * 备注信息
+     * 备注
      */
     private String remark;
-    /**
-     * 创建者id
-     */
-    @TableField("create_id")
-    private Long createId;
-    /**
-     * 修改者id
-     */
-    @TableField("update_id")
-    private Long updateId;
-    /**
-     * 创建时间
-     */
-    @TableField("create_date")
-    private Date createDate;
-    /**
-     * 修改时间
-     */
-    @TableField("update_date")
-    private Date updateDate;
+
+
+    public Long getMenuId() {
+        return menuId;
+    }
+
+    public void setMenuId(Long menuId) {
+        this.menuId = menuId;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getPerms() {
+        return perms;
+    }
+
+    public void setPerms(String perms) {
+        this.perms = perms;
+    }
+
+    public Integer getType() {
+        return type;
+    }
+
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
 
     @Override
     protected Serializable pkVal() {
-        return this.sysMenuId;
+        return this.menuId;
     }
 
+    @Override
+    public String toString() {
+        return "SysMenu{" +
+        ", menuId=" + menuId +
+        ", parentId=" + parentId +
+        ", name=" + name +
+        ", url=" + url +
+        ", perms=" + perms +
+        ", type=" + type +
+        ", icon=" + icon +
+        ", orderNum=" + orderNum +
+        ", remark=" + remark +
+        "}";
+    }
 }

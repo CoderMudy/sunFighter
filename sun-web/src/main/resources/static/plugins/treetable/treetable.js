@@ -75,7 +75,8 @@ layui.define(['layer', 'table'], function (exports) {
                     iconHtml += '<span class="treeTable-empty"></span>';
                 }
                 if (isDir) {
-                    iconHtml += '<i class="layui-icon layui-icon-triangle-d"></i> <i class="layui-icon layui-icon-layer"></i>';
+                    iconHtml += '<i class="layui-icon layui-icon-triangle-d"></i>';
+                    // iconHtml += '<i class="layui-icon layui-icon-triangle-d"></i> <i class="layui-icon layui-icon-layer"></i>';
                 } else {
                     iconHtml += '<i class="layui-icon layui-icon-file"></i>';
                 }
@@ -88,6 +89,9 @@ layui.define(['layer', 'table'], function (exports) {
             param.done = function (res, curr, count) {
                 $(param.elem).next().addClass('treeTable');
                 $('.treeTable .layui-table-page').css('display', 'none');
+                var height = $('.treeTable .layui-table-page').parent()[0].style.height;
+                height = height.replace('px','')-40;
+                $('.treeTable .layui-table-page').parent()[0].style.height = height+"px";
                 $(param.elem).next().attr('treeLinkage', param.treeLinkage);
                 // 绑定事件换成对body绑定
                 /*$('.treeTable .treeTable-icon').click(function () {

@@ -1,6 +1,7 @@
 package com.sun.fighter.study.controller.user;
 
 
+import com.sun.fighter.common.JsonData;
 import com.sun.fighter.study.system.domain.SysUser;
 import com.sun.fighter.study.system.service.SysUserService;
 import com.sun.fighter.util.BeanValidator;
@@ -27,9 +28,10 @@ public class SysUserController {
 
     @ApiOperation("新增用户")
     @PostMapping
-    public void insertSysUser(SysUser sysUser){
+    public JsonData insertSysUser(SysUser sysUser){
         BeanValidator.check(sysUser);
         sysUserService.insertSysUser(sysUser);
+        return JsonData.success();
     }
 
 }

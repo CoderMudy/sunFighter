@@ -4,26 +4,20 @@
 
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="com.sun.fighter.study.system.domain.SysMenu">
-        <id column="sys_menu_id" property="sysMenuId" />
-        <result column="name" property="name" />
+        <id column="menu_id" property="menuId" />
         <result column="parent_id" property="parentId" />
-        <result column="type" property="type" />
+        <result column="name" property="name" />
         <result column="url" property="url" />
+        <result column="perms" property="perms" />
+        <result column="type" property="type" />
         <result column="icon" property="icon" />
-        <result column="show_flag" property="showFlag" />
-        <result column="permission" property="permission" />
-        <result column="sort" property="sort" />
-        <result column="status" property="status" />
+        <result column="order_num" property="orderNum" />
         <result column="remark" property="remark" />
-        <result column="create_id" property="createId" />
-        <result column="update_id" property="updateId" />
-        <result column="create_date" property="createDate" />
-        <result column="update_date" property="updateDate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        sys_menu_id AS sysMenuId, name, parent_id AS parentId, type, url, icon, show_flag AS showFlag, permission, sort, status, remark, create_id AS createId, update_id AS updateId, create_date AS createDate, update_date AS updateDate
+        menu_id AS menuId, parent_id AS parentId, name, url, perms, type, icon, order_num AS orderNum, remark
     </sql>
 
 </mapper>

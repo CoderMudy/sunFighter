@@ -1,8 +1,21 @@
 [{
-	"title" : "后台首页",
+	"title" : "后台首页1",
 	"icon" : "icon-computer",
 	"href" : "page/main.html",
 	"spread" : false
+},{
+	"title" : "系统管理",
+	"icon" : "icon-text",
+	"href" : "",
+	"spread" : false,
+	"children" : [
+		{
+			"title" : "菜单管理",
+			"icon" : "&#xe61c;",
+			"href" : "/toMenuList",
+			"spread" : false
+		}
+	]
 },{
 	"title" : "文章列表",
 	"icon" : "icon-text",

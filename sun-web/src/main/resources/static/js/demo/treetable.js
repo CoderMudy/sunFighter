@@ -20,7 +20,7 @@ layui.config({
             treeLinkage: false,
             elem: '#table1',
             url: 'json/data.json',
-            page: false,
+            page: true,
             cols: [[
                 {type: 'numbers'},
                 {field: 'name', title: 'name'},
