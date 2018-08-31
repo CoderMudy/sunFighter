@@ -1,11 +1,33 @@
 layui.config({
     base: 'plugins/'
 }).extend({
-    treetable: 'treetable/treetable'
-}).use(['table', 'treetable'], function () {
+    treetable: 'treetable/treetable',
+    iconPicker: 'iconPicker/iconPicker'
+}).use(['table', 'treetable','iconPicker'], function () {
     var $ = layui.jquery;
     var table = layui.table;
     var treetable = layui.treetable;
+    var iconPicker = layui.iconPicker;
+
+    iconPicker.render({
+        // 选择器，推荐使用input
+        elem: '#iconPicker',
+        // 数据类型：fontClass/unicode，推荐使用fontClass
+        type: 'fontClass',
+        // 是否开启搜索：true/false
+        search: true,
+        // 点击回调
+        click: function (data) {
+            console.log(data);
+        }
+    });
+
+    /**
+     * 选中图标 （常用于更新时默认选中图标）
+     * @param filter lay-filter
+     * @param iconName 图标名称，自动识别fontClass/unicode
+     */
+    iconPicker.checkIcon('iconPicker', 'layui-icon-star-fill');
 
     // 渲染表格
     layer.load(2);
@@ -15,7 +37,7 @@ layui.config({
         treeIdName: 'menuId',
         treePidName: 'parentId',
         elem: '#menuTable',
-        height: 'full-10',
+        height: 'full-60',
         url: '/sysMenu/list',
         page: false,
         cols: [[
@@ -34,6 +56,9 @@ layui.config({
                     }
                 }, title: '类型'
             },
+            {field: 'icon', width: 80 , align: 'center', title: '图标',templet:function (rowData) {
+                    return '<i class="layui-icon '+rowData.icon+'"></i> ';
+                }},
             {field: 'url', title: '菜单url'},
             {field: 'perms', title: '权限标识'},
             {field: 'orderNum', width: 80, align: 'center', title: '排序号'},

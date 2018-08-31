@@ -5,8 +5,14 @@
     <title>菜单管理</title>
     <link rel="stylesheet" th:href="@{/plugins/layui/css/layui.css}" media="all"/>
 </head>
-<body>
+<body style="padding: 5px;">
 
+    <div class="layui-inline">
+        <button class="layui-btn" data-type="reload">新增</button>
+    </div>
+    <div class="layui-inline" STYLE="width: 300px;">
+        <input type="text" id="iconPicker" lay-filter="iconPicker" class="layui-input">
+    </div>
 <table id="menuTable" class="layui-table" lay-filter="menuTable"></table>
 
 <!-- 操作列 -->
