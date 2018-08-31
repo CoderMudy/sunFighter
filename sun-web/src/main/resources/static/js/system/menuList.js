@@ -11,7 +11,7 @@ layui.config({
     layer.load(2);
     treetable.render({
         treeColIndex: 1,
-        treeSpid: -1,
+        treeSpid: 0,
         treeIdName: 'menuId',
         treePidName: 'parentId',
         elem: '#menuTable',
@@ -20,7 +20,7 @@ layui.config({
         page: false,
         cols: [[
             {type: 'numbers'},
-            {field: '"name', minWidth: 200, title: '菜单名称'},
+            {field: 'name', minWidth: 200, title: '菜单名称'},
             {
                 field: 'isMenu', width: 80, align: 'center', templet: function (d) {
                     if (d.type== 0) {
